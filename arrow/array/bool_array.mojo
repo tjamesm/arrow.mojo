@@ -40,6 +40,25 @@ struct ArrowBooleanArray:
         self._buffer = Bitmap(value_list)
         self.mem_used = self._validity.mem_used + self._buffer.mem_used
 
+    fn __eq__(self, other: Self) raises -> Bool:
+        if self.length != other.length:
+            return False
+        for i in range(self.length):
+            print(
+                "i:",
+                i,
+                "self[i]:",
+                self[i].or_else(False),
+                "other[i]:",
+                other[i].or_else(False),
+            )
+            if (self[i] is None) != (other[i] is None):
+                return False
+            if self[i] is not None:
+                if self[i].or_else(False) != other[i].or_else(False):
+                    return False
+        return True
+
     fn __len__(self) -> Int:
         return self.length
 
