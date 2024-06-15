@@ -29,12 +29,19 @@ struct ArrowBooleanArray:
         var value_list = List[Bool](capacity=len(values))
 
         for i in range(len(values)):
+            print("__init__:", values[i].or_else(False))
             if values[i] is None:
                 validity_list.append(False)
                 self.null_count += 1
             else:
                 validity_list.append(True)
                 value_list.append(values[i])
+
+        for i in range(len(validity_list)):
+            print("__init__ final validity_list:", validity_list[i])
+
+        for i in range(len(value_list)):
+            print("__init__ final value_list:", value_list[i])
 
         self._validity = Bitmap(validity_list)
         self._buffer = Bitmap(value_list)
@@ -44,13 +51,21 @@ struct ArrowBooleanArray:
         if self.length != other.length:
             return False
         for i in range(self.length):
+            # print(
+            #     "i:",
+            #     i,
+            #     "self[i]:",
+            #     self[i].or_else(False),
+            #     "other[i]:",
+            #     other[i].or_else(False),
+            # )
             print(
                 "i:",
                 i,
                 "self[i]:",
-                self[i].or_else(False),
+                self.__getitem__(i).or_else(False),
                 "other[i]:",
-                other[i].or_else(False),
+                other.__getitem__(i).or_else(False),
             )
             if (self[i] is None) != (other[i] is None):
                 return False
